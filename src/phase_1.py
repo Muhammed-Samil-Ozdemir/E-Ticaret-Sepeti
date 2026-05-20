@@ -42,10 +42,36 @@ class Discount:
         self.amount = amount
         self.is_percentage = is_percentage
 
+class CartService:
+    def __init__(self):
+        self.payment_method = None
+        self.cart = Cart()
+        self.payment_service = PaymentService()
+        self.discount_factory = DiscountFactory()
+
+    def add_product(self, product: Product):
+        self.cart.add_product(product)
+
+    def remove_product(self, product: Product):
+        self.cart.remove_product(product)
+
+    def apply_payment_method(self, payment_method: IPaymentMethod):
+        self.payment_method = payment_method
+
+    def pay(self):
+        self.payment_service.pay(self.payment_method)
+
+class PaymentService:
+    def __init__(self):
+        self.payment_method: IPaymentMethod = None
+
+    def pay(self, payment_method: IPaymentMethod):
+        self.payment_method = payment_method
+        self.payment_method.pay()
+
 class DiscountFactory:
     def create(self, amount, is_percentage = False):
         return Discount(amount, is_percentage)
-
 
 class IPaymentMethod(ABC):
     @abstractmethod
