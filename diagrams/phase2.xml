@@ -1,0 +1,110 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="UML - Phase 2 Extended">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- CartService -->
+        <mxCell id="2" value="CartService&#xa;----------------&#xa;+ add_product()&#xa;+ remove_product()&#xa;+ apply_payment_method()&#xa;+ pay()" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="400" y="40" width="220" height="140" as="geometry"/>
+        </mxCell>
+
+        <!-- Cart -->
+        <mxCell id="3" value="Cart&#xa;----------------&#xa;+ add_product()&#xa;+ remove_product()" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="260" width="200" height="120" as="geometry"/>
+        </mxCell>
+
+        <!-- PaymentService -->
+        <mxCell id="4" value="PaymentService&#xa;----------------&#xa;+ pay()" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="400" y="260" width="200" height="100" as="geometry"/>
+        </mxCell>
+
+        <!-- DiscountFactory -->
+        <mxCell id="5" value="DiscountFactory&#xa;----------------&#xa;+ create()" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="400" y="600" width="180" height="100" as="geometry"/>
+        </mxCell>
+
+        <!-- Discount -->
+        <mxCell id="6" value="Discount" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="600" y="600" width="160" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- Product -->
+        <mxCell id="7" value="Product (IProduct)&#xa;----------------&#xa;+ get_name()&#xa;+ get_price()&#xa;+ set_discount()" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="460" width="240" height="160" as="geometry"/>
+        </mxCell>
+
+        <!-- Decorator Base -->
+        <mxCell id="8" value="ProductDecorator&#xa;(Decorator Base)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="400" y="460" width="200" height="120" as="geometry"/>
+        </mxCell>
+
+        <!-- LoggedProduct -->
+        <mxCell id="9" value="LoggedProduct" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="650" y="420" width="160" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- PremiumProduct -->
+        <mxCell id="10" value="PremiumProduct" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="650" y="520" width="160" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- Payment Strategy -->
+        <mxCell id="11" value="IPaymentMethod&#xa;----------------&#xa;+ pay()" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="700" y="260" width="200" height="100" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="12" value="CreditCardPayment" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="950" y="200" width="160" height="60" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="13" value="PaypalPayment" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="950" y="270" width="160" height="60" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="14" value="BankTransferPayment" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="950" y="340" width="160" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- Payment Channel -->
+        <mxCell id="15" value="IPaymentChannel&#xa;----------------&#xa;+ process()" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="700" y="360" width="200" height="100" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="16" value="LiveChannel" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="950" y="420" width="160" height="60" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="17" value="SandboxChannel" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="950" y="490" width="160" height="60" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="18" value="MockChannel" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="950" y="560" width="160" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- Connections -->
+        <mxCell id="20" edge="1" parent="1" source="2" target="3"/>
+        <mxCell id="21" edge="1" parent="1" source="2" target="4"/>
+        <mxCell id="22" edge="1" parent="1" source="4" target="11"/>
+
+        <mxCell id="23" edge="1" parent="1" source="7" target="5"/>
+        <mxCell id="24" edge="1" parent="1" source="5" target="6"/>
+
+        <mxCell id="25" edge="1" parent="1" source="8" target="7"/>
+        <mxCell id="26" edge="1" parent="1" source="9" target="8"/>
+        <mxCell id="27" edge="1" parent="1" source="10" target="8"/>
+
+        <mxCell id="28" edge="1" parent="1" source="12" target="11"/>
+        <mxCell id="29" edge="1" parent="1" source="13" target="11"/>
+        <mxCell id="30" edge="1" parent="1" source="14" target="11"/>
+
+        <mxCell id="31" edge="1" parent="1" source="16" target="15"/>
+        <mxCell id="32" edge="1" parent="1" source="17" target="15"/>
+        <mxCell id="33" edge="1" parent="1" source="18" target="15"/>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

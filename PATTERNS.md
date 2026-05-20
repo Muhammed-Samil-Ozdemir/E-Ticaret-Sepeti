@@ -5,7 +5,7 @@
 ## 1. Factory Pattern — `DiscountFactory`
 
 ### Nerede
-`DiscountFactory.create(amount, is_percentage)` → `Discount` nesnesi döner.  
+`DiscountFactory.create(amount, is_percentage)` → `Discount` nesnesi döner.
 `Product` ve `CartService` bu factory'yi doğrudan kullanır.
 
 ### Neden
@@ -26,7 +26,7 @@
 ## 2. Strategy Pattern — `IPaymentMethod`
 
 ### Nerede
-`IPaymentMethod` soyut arayüzü; `CreditCardPayment`, `PaypalPayment`, `BankTransferPayment` somut stratejileri.  
+`IPaymentMethod` soyut arayüzü; `CreditCardPayment`, `PaypalPayment`, `BankTransferPayment` somut stratejileri.
 `CartService.apply_payment_method(payment_method)` ile çalışma zamanında strateji atanır.
 
 ### Neden
@@ -61,21 +61,69 @@ Facade bu koordinasyonu kapsüller; istemci subsystem'ın iç yapısını bilmek
 
 ---
 
+## 4. Bridge Pattern — `IPaymentMethod` × `IPaymentChannel`
+
+### Nerede
+`IPaymentMethod` artık bir `IPaymentChannel` referansı taşıyor.
+`LiveChannel`, `SandboxChannel`, `MockChannel` somut implementasyonlar.
+Ödeme yöntemi ve ortam runtime'da bağımsız olarak seçiliyor.
+
+### Neden
+Her ödeme yöntemi için her ortamda ayrı subclass açmak m × n sınıf patlaması yaratır.
+Bridge ile iki hiyerarşi birbirinden ayrılır, composition ile birleştirilir.
+`CartService` hiç değişmez.
+
+### Ne kazandın
+| | Olmadan | Bridge ile |
+|---|---|---|
+| Yeni ortam eklemek | Her ödeme sınıfına dokunmak gerekir | Sadece yeni Channel sınıfı yaz |
+| Test ortamı | Gerçek API'ye istek gider | `MockChannel` inject et, ağ yok |
+| Kombinasyon sayısı | m × n sınıf | m + n sınıf |
+
+---
+
+## 5. Decorator Pattern — `IProduct`
+
+### Nerede
+`Product` sınıfı `IProduct` arayüzünü implemente ediyor.
+`LoggedProduct` ve `PremiumProduct` zincirlenerek sarılabiliyor:
+`PremiumProduct(LoggedProduct(product))`.
+
+### Neden
+Ürün davranışı kombinasyonları compile-time'da bilinemez.
+Subclass ile her kombinasyon için ayrı sınıf gerekirdi.
+Decorator ile mevcut `Product` kodu dokunulmadan runtime'da davranış ekleniyor.
+
+### Ne kazandın
+| | Olmadan | Decorator ile |
+|---|---|---|
+| Yeni davranış eklemek | Product'a doğrudan yaz ya da subclass aç | Yeni dekoratör sınıfı yaz, zincire ekle |
+| Kombinasyon | LoggedPremiumProduct, PremiumProduct... patlama | İstediğin kadar zincirle |
+| Mevcut kod | Değişmek zorunda | Hiç dokunulmadı |
+
+---
+
 ## Birlikte çalışma özeti
 
 ```
 İstemci
   └─► CartService (Facade)
-        ├─► Cart ──────────────────► Product
+        ├─► Cart ──────────────────► IProduct (Decorator)
+        │                                └─► Product
+        │                                └─► LoggedProduct
+        │                                └─► PremiumProduct
         │                                └─► DiscountFactory (Factory)
         └─► PaymentService
-              └─► IPaymentMethod (Strategy)
-                    ├─ CreditCardPayment
-                    ├─ PaypalPayment
-                    └─ BankTransferPayment
+              └─► IPaymentMethod (Strategy + Bridge)
+                    ├─ CreditCardPayment ──► IPaymentChannel
+                    ├─ PaypalPayment         ├─ LiveChannel
+                    └─ BankTransferPayment   ├─ SandboxChannel
+                                            └─ MockChannel
 ```
 
-Üç örüntü birbirini tamamlar:
-- **Factory**, nesne üretimini merkezileştirir.
-- **Strategy**, ödeme davranışını değiştirilebilir kılar.
-- **Facade**, bu karmaşıklığı dış dünyadan gizler.
+Beş örüntü birbirini tamamlar:
+- **Factory** nesne üretimini merkezileştirir.
+- **Strategy** ödeme davranışını değiştirilebilir kılar.
+- **Facade** karmaşıklığı dış dünyadan gizler.
+- **Bridge** ödeme yöntemi ile ortamı birbirinden ayırır.
+- **Decorator** ürünlere runtime'da davranış ekler.
